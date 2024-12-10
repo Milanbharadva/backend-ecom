@@ -11,7 +11,7 @@ require("dotenv").config();
 const app = express();
 
 // Middleware
-app.use(cors({ origin: "https://ecommerce-app-ruddy-ten.vercel.app/" }));
+app.use(cors({ origin: "https://ecommerce-node-jbt5.vercel.app" }));
 app.use(bodyParser.json({ limit: "100mb" }));
 
 // Connect to DB
