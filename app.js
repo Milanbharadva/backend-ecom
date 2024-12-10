@@ -1,16 +1,42 @@
-const express = require('express');
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const connectDB = require("./config/db");
+const errorHandler = require("./middlewares/errorHandler");
+const userRoutes = require("./routes/userRoutes");
+const PORT = 5000;
 
-const app = express()
-const PORT = 8000
+require("dotenv").config();
 
-app.get('/', (req, res) => {
-  res.send('Hello World')
-})
+const app = express();
 
-app.get('/about', (req, res) => {
-  res.send('About route 🎉 ')
-})
+// Middleware
+app.use(cors({ origin: "https://ecommerce-app-ruddy-ten.vercel.app/" }));
+app.use(bodyParser.json({ limit: "100mb" }));
+
+// Connect to DB
+connectDB();
+
+app.use((req, res, next) => {
+  let timeoutId = setTimeout(() => {
+    res.status(500).send("Request Timeout");
+  }, 60000);
+
+  res.on("finish", () => {
+    clearTimeout(timeoutId);
+  });
+
+  next();
+});
+// Routes
+app.get("/", (req, res) => {
+  res.end("HELLO");
+});
+app.use("/api/users", userRoutes);
+
+// Error handling middleware
+app.use(errorHandler);
 
 app.listen(PORT, () => {
-  console.log(`✅ Server is running on port ${PORT}`);
-})
+  console.log(`Server running on http://localhost:${PORT}`);
+});
