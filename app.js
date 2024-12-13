@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const connectDB = require("./config/db");
 const errorHandler = require("./middlewares/errorHandler");
 const userRoutes = require("./routes/userRoutes");
+const productRoutes = require("./routes/productRoutes");
 const PORT = 5000;
 
 require("dotenv").config();
@@ -33,6 +34,7 @@ app.get("/", (req, res) => {
   res.end("HELLO");
 });
 app.use("/api/users", userRoutes);
+app.use("/api/products", productRoutes);
 
 // Error handling middleware
 app.use(errorHandler);
